@@ -1,6 +1,6 @@
+import cprint
 import chess as ch
 import ChessEngine as engine
-
 
 def play_engine_move(board, color, max_depth):
     chessbot = engine.Engine(board, color, max_depth)
@@ -15,7 +15,7 @@ def play_human_move(board):
         if len(list(board.legal_moves)) == 0:
             return
         else:
-            print('legal moves:', board.legal_moves)
+            cprint.cprint.err(f'legal moves: {board.legal_moves}', interrupt=False)
             move = input('enter your move: ')
             if move.upper() == 'UNDO':
                 try:
@@ -23,11 +23,11 @@ def play_human_move(board):
                     board.pop()
                     play_human_move(board)
                 except IndexError:
-                    print("no more moves to undo...")
+                    cprint.cprint.fatal("no more moves to undo...")
                     play_human_move(board)
             elif move.upper() == 'END':
                 board.reset()
-                print('the game is now terminated...')
+                cprint.cprint.fatal('the game is now terminated...')
                 exit()
             else:
                 board.push_san(move)
@@ -35,27 +35,27 @@ def play_human_move(board):
                 print(board)
                 print('===============')
     except ValueError:
-        print('invalid move! please try again...')
+        cprint.cprint.fatal('invalid move! please try again...')
         play_human_move(board)
 
 def start_game(board, color, max_depth):
     if color in ['b', 'black']:
         while not board.is_game_over():
-            print('the engine is thinking...')
+            cprint.cprint.ok('the engine is thinking...')
             play_engine_move(board, ch.WHITE, max_depth)
             play_human_move(board)
     else:
         while not board.is_game_over():
             play_human_move(board)
-            print('the engine is thinking...')
+            cprint.cprint.ok('the engine is thinking...')
             play_engine_move(board, ch.BLACK, max_depth)
 
     if board.outcome().winner == None:
-        print('GAME OVER')
+        cprint.cprint.warn('GAME OVER')
     elif board.outcome().winner == color:
-        print('YOU WIN')
+        cprint.cprint.info('YOU WIN')
     else:
-        print('YOU LOSE')
+        cprint.cprint.fatal('YOU LOSE')
 
     board.reset()  
 
