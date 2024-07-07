@@ -3,6 +3,10 @@
 ## Overview
 QueenGambit is a Python-based chess engine implemented using the `python-chess` library. It allows users to play against it at different difficulty levels or watch it play against itself.
 
+<div style="text-align: center;">
+  <img src="./chess.png" alt="Preview" style="width: 64%;">
+</div>
+
 ## Code Structure
 The implementation is structured into several key components:
 
