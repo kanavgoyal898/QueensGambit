@@ -1,14 +1,16 @@
+import time
+import random
 import cprint
-import chess.svg
 import chess as ch
 import ChessEngine as engine
 
+import chess.svg
 def save_board_state(board, filename='chess_board.svg'):
     """Save the current state of the board to an SVG file."""
+    time.sleep(2)
     image = chess.svg.board(board)
     with open(filename, 'w') as f:
         f.write(image)
-    f.close()
 
 def play_engine_move(board, color, max_depth):
     """Make a move using the chess engine and update the board state."""
@@ -17,7 +19,7 @@ def play_engine_move(board, color, max_depth):
     board.push(move)
     save_board_state(board)
 
-def play_human_move(board):
+def play_human_move(board, is_crazy=False):
     """Prompt the human player to make a move and update the board state."""
     try:
         if len(list(board.legal_moves)) == 0:
@@ -25,41 +27,46 @@ def play_human_move(board):
         else:
             legal_moves = list(board.legal_moves)
             legal_moves = [move.uci() for move in legal_moves]
-            legal_moves_str = ' '.join(legal_moves)
-            cprint.cprint.err(f'legal moves: {legal_moves_str}', interrupt=False)
-            move = input('enter your move: ')
-            if move.upper() == 'UNDO':
-                try:
-                    board.pop()
-                    board.pop()
+            if not is_crazy:
+                legal_moves_str = ' '.join(legal_moves)
+                cprint.cprint.info('enter UNDO/END to interrupt the game')
+                cprint.cprint.err(f'legal moves: {legal_moves_str}', interrupt=False)
+                move = input('enter your move: ')
+                if move.upper() == 'UNDO':
+                    try:
+                        board.pop()
+                        board.pop()
+                        save_board_state(board)
+                        play_human_move(board)
+                    except IndexError:
+                        cprint.cprint.fatal("no more moves to undo...")
+                elif move.upper() == 'END':
+                    board.reset()
                     save_board_state(board)
-                    play_human_move(board)
-                except IndexError:
-                    cprint.cprint.fatal("no more moves to undo...")
-            elif move.upper() == 'END':
-                board.reset()
-                save_board_state(board)
-                cprint.cprint.fatal('the game is now terminated...')
-                exit()
+                    cprint.cprint.fatal('the game is now terminated...')
+                    exit()
+                else:
+                    board.push_san(move)
+                    save_board_state(board)
             else:
+                move = random.choice(legal_moves)
                 board.push_san(move)
                 save_board_state(board)
     except ValueError:
         cprint.cprint.fatal('invalid move! please try again...')
         play_human_move(board)
 
-def start_game(board, color, max_depth):
+def start_game(board, color, max_depth, is_crazy=False):
     """Start the game and alternate moves between the human player and the engine."""
-    cprint.cprint.info('enter UNDO/END to interrupt the game')
 
     if color in ['b', 'black']:
         while not board.is_game_over():
             cprint.cprint.ok('the engine is thinking...')
             play_engine_move(board, ch.WHITE, max_depth)
-            play_human_move(board)
+            play_human_move(board, is_crazy)
     else:
         while not board.is_game_over():
-            play_human_move(board)
+            play_human_move(board, is_crazy)
             cprint.cprint.ok('the engine is thinking...')
             play_engine_move(board, ch.BLACK, max_depth)
 
@@ -73,7 +80,9 @@ def start_game(board, color, max_depth):
     else:
         cprint.cprint.fatal('YOU LOSE')
 
+    time.sleep(8)
     board.reset()
+    save_board_state(board)
 
 def get_user_input():
     """Prompt the user to choose the color and difficulty level for the game."""
@@ -98,7 +107,19 @@ def get_user_input():
         level = input('choose difficulty level (auto/easy/medium/difficult): ').lower()
     max_depth = levels[level]
 
-    start_game(board, color, max_depth)
+    crazy = None
+    is_crazy = None
+    crazy_levels = {
+        'y' : True,
+        'yes': True,
+        'n': False,
+        'no': False
+    }
+    while crazy not in crazy_levels.keys():
+        crazy = input('crazy level? (yes/no): ').lower()
+    is_crazy = crazy_levels[crazy]
+
+    start_game(board, color, max_depth, is_crazy)
 
 def main():
     get_user_input()

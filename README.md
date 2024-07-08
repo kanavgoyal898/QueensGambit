@@ -1,10 +1,10 @@
 # QueenGambit Chess Engine
 
 ## Overview
-QueenGambit is a Python-based chess engine implemented using the `python-chess` library. It allows users to play against it at different difficulty levels or watch it play against itself. Minimax, depth-pruning, and alpha-beta pruning are crucial techniques in computer chess programming, especially given the vast number of possible board positions starting from the beginning of the game.
+QueenGambit is a Python-based chess engine that utilizes the Minimax algorithm with alpha-beta pruning to evaluate and make optimal moves. It features relative piece values inspired by AlphaZero and includes an entropy-based evaluation for more dynamic gameplay. The engine can play against a human opponent or simulate a match between two AI instances.
 
 <div style="text-align: center;">
-  <img src="./chess.png" alt="Preview" style="width: 64%;">
+  <img src="./chess.png" alt="Preview" style="width: 100%;">
 </div>
 
 ---
@@ -19,7 +19,7 @@ Given the vast number of possible chess board positions (estimated around **1e43
 
 ## Library Installations
 Before using QueenGambit, make sure you have the following libraries installed:
-- **python-chess**: Used for chess board representation and move generation.
+- **python-chess**: Used for chess board representation and move generation. 
   ```bash
   pip install python-chess
   ```
@@ -27,6 +27,17 @@ Before using QueenGambit, make sure you have the following libraries installed:
   ```bash
   pip install cprint
   ```
+
+## Features
+
+- **Minimax Algorithm**: Implements the Minimax algorithm with alpha-beta pruning to efficiently evaluate possible moves.
+- **AlphaZero Relative Piece Values**: Uses values inspired by AlphaZero for more accurate move evaluations.
+- **Entropy-Based Evaluation**: Adds a random factor to the evaluation function for unpredictable gameplay.
+- **Opening Catalyst**: Provides a bonus for the number of legal moves in the opening phase.
+- **Human vs. AI and AI vs. AI**: Allows for both human vs. AI and AI vs. AI matches.
+- **SVG Board State Saving**: Saves the current board state as an SVG file after each move.
+- **Difficulty Levels**: Offers four difficulty levels (easy, medium, difficult, auto).
+- **Crazy Mode**: Option for a more random and unpredictable gameplay experience.
 
 ## Code Structure
 The implementation is structured into several key components:
@@ -39,35 +50,45 @@ The implementation is structured into several key components:
   - `checkmate_opportunity()`: Evaluates if the game is in a checkmate position and assigns scores accordingly.
   - `opening_catalyst()`: Provides a bonus for moves made in the opening phase of the game.
   - `evaluation_function()`: Combines the above evaluations to compute a total score for a given board position.
-  - `piece_relative_value(position)`: Assigns relative values to each piece type on the board. You can find more information on relative piece value in chess in this [paper: Assessing Game Balance with AlphaZero: Exploring Alternative Rule Sets in Chess](https://arxiv.org/pdf/2009.04374) by Tomašev et al. (DeepMind, 2020).
+  - `piece_relative_value(position)`: Assigns relative values to each piece type on the board. You can find more information on relative piece value in chess in this paper: [Assessing Game Balance with AlphaZero: Exploring Alternative Rule Sets in Chess](https://arxiv.org/pdf/2009.04374) by Tomašev et al. (DeepMind, 2020).
 
 - **Minimax Algorithm:**
   - `max_value(depth, alpha, beta)`: Implements the maximizing agent's logic using minimax with alpha-beta pruning.
   - `min_value(depth, alpha, beta)`: Implements the minimizing agent's logic using minimax with alpha-beta pruning.
   - `get_best_move()`: Initiates the search for the best move using the minimax algorithm.
 
-### Gameplay Functions
-- **Player vs. Engine:**
-  - `play_engine_move(board, color, max_depth)`: Allows the engine to make a move based on its evaluation.
-  - `play_human_move(board)`: Accepts moves from the user, validates them, and updates the board accordingly.
-  - `start_game(board, color, max_depth)`: Manages the flow of the game between player and engine.
+### Game Functions
 
-- **User Interaction:**
-  - `get_user_input()`: Takes user input for selecting color and difficulty level and starts the game accordingly.
+- `save_board_state()`: Saves the current board state as an SVG file.
+- `play_engine_move()`: Executes a move by the AI and saves the board state.
+- `play_human_move()`: Prompts the human player to make a move and updates the board state.
+- `start_game()`: Alternates moves between the human player and the AI until the game is over.
+- `get_user_input()`: Collects user preferences for color, difficulty level, and crazy mode.
 
 ### Main Execution
 - **Main Function (`main()`):**
   - Entry point of the program, which initializes the game by calling `get_user_input()`.
 
 ## Usage
-To play the game:
-1. Run the script `main.py`.
-2. Follow the prompts to choose your color (Black/White) and difficulty level (Easy/Medium/Difficult).
-3. Enter moves in algebraic notation when prompted during your turn.
-4. The engine will respond with its move, and the game continues until completion.
+
+1. **Clone the repository**:
+
+```bash
+git clone https://github.com/kanavgoyal898/queengambit.git
+cd queengambit
+```
+
+2. **Run the main script**:
+
+```bash
+cd models
+python main.py
+```
+
+3. **Follow the prompts** to choose your color, difficulty level, and whether you want to play in crazy mode.
 
 ## Additional Notes
 
 - **Undo Move:** Typing "UNDO" allows the user to undo their last move.
 - **End Game:** Typing "END" terminates the game.
-- **Outcome:** After the game ends, the result (win/lose/draw) is displayed.
+- **Outcome:** After the game ends, the result (win/lose/draw) is displaye`
