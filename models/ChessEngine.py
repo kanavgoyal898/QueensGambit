@@ -1,5 +1,3 @@
-# chess library reference: 
-# https://python-chess.readthedocs.io/en/latest/index.html#
 import chess as ch
 import random as rd
 
@@ -79,6 +77,7 @@ class Engine:
             return self.evaluation_function()
         else:
             play_move = None
+            
             value = float('-inf')
             moves = list(self.board.legal_moves)
 
@@ -86,22 +85,23 @@ class Engine:
                 self.board.push(move)
 
                 move_value = self.min_value(depth+1, alpha, beta)
+
+                self.board.pop()
                 if value < move_value:
                     value = move_value
 
                     if depth == 0:
                         play_move = move
                 
-                self.board.pop()
-
+                # converge alpha to right
                 alpha = max(alpha, value)
                 if alpha >= beta:
                     break
 
             if depth == 0:
                 return play_move
-            
-            return value
+            else:
+                return value
         
     def min_value(self, depth, alpha, beta):
         if depth >= self.max_depth or len(list(self.board.legal_moves)) == 0:
@@ -114,11 +114,12 @@ class Engine:
                 self.board.push(move)
 
                 move_value = self.max_value(depth+1, alpha, beta)
+
+                self.board.pop()
                 if value > move_value:
                     value = move_value
 
-                self.board.pop()
-
+                # converge beta to left
                 beta = min(beta, value)
                 if alpha >= beta:
                     break
@@ -126,4 +127,7 @@ class Engine:
             return value
         
     def get_best_move(self):
-        return self.max_value(0, float('-inf'), float('inf'))
+        # alpha - lower_limit
+        # beta - upper_limit
+        best_move = self.max_value(0, float('-inf'), float('inf'))
+        return best_move

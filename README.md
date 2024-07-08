@@ -37,6 +37,7 @@ Before using QueenGambit, make sure you have the following libraries installed:
 - **Human vs. AI and AI vs. AI**: Allows for both human vs. AI and AI vs. AI matches.
 - **SVG Board State Saving**: Saves the current board state as an SVG file after each move.
 - **Difficulty Levels**: Offers four difficulty levels (easy, medium, difficult, auto).
+- **Bot Mode**: Option for a more optimized and intelligent gameplay experience.
 - **Crazy Mode**: Option for a more random and unpredictable gameplay experience.
 
 ## Code Structure
@@ -63,7 +64,7 @@ The implementation is structured into several key components:
 - `play_engine_move()`: Executes a move by the AI and saves the board state.
 - `play_human_move()`: Prompts the human player to make a move and updates the board state.
 - `start_game()`: Alternates moves between the human player and the AI until the game is over.
-- `get_user_input()`: Collects user preferences for color, difficulty level, and crazy mode.
+- `get_user_input()`: Collects user preferences for color, difficulty level, and bot/crazy mode.
 
 ### Main Execution
 - **Main Function (`main()`):**
@@ -85,7 +86,7 @@ cd models
 python main.py
 ```
 
-3. **Follow the prompts** to choose your color, difficulty level, and whether you want to play in crazy mode.
+3. **Follow the prompts** to choose your color, difficulty level, and whether you want to play in bot/crazy mode.
 
 ## User Interface 
 To view SVG files using the Live Server extension in Visual Studio Code, follow these steps:
