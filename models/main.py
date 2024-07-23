@@ -1,6 +1,5 @@
 import time
 import random
-import cprint
 
 import chess as ch
 import ChessEngine as engine
@@ -35,8 +34,8 @@ def play_human_move(board, is_crazy=False):
             legal_moves = list(board.legal_moves)
             legal_moves = [move.uci() for move in legal_moves]
             legal_moves_str = ' '.join(legal_moves)
-            cprint.cprint.warn('enter UNDO/END to interrupt the game...')
-            cprint.cprint.err(f'legal moves: {legal_moves_str}', interrupt=False)
+            print('enter UNDO/END to interrupt the game...')
+            print(f'legal moves: {legal_moves_str}')
             move = input('enter your move: ') if not is_crazy else random.choice(legal_moves)
             if move.upper() == 'UNDO':
                 try:
@@ -45,18 +44,18 @@ def play_human_move(board, is_crazy=False):
                     save_board_state(board)
                     play_human_move(board, is_crazy)
                 except IndexError:
-                    cprint.cprint.fatal("no more moves to undo...")
+                    print("no more moves to undo...")
                     play_human_move(board, is_crazy)
             elif move.upper() == 'END':
                 board.reset()
                 save_board_state(board)
-                cprint.cprint.fatal('the game is now terminated...')
+                print('the game is now terminated...')
                 exit()
             else:
                 board.push_san(move)
                 save_board_state(board)
     except ValueError:
-        cprint.cprint.fatal('invalid move! please try again...')
+        print('invalid move! please try again...')
         play_human_move(board, is_crazy)
 
 def start_game(color, max_depth, is_crazy=False, is_bot=False):
@@ -68,7 +67,7 @@ def start_game(color, max_depth, is_crazy=False, is_bot=False):
     while not board.is_game_over():
 
         if color in ['b', 'black']:
-            cprint.cprint.ok('the engine is thinking...')
+            print('the engine is thinking...')
             play_engine_move(board, ch.WHITE, max_depth)
 
             if not is_bot:
@@ -82,18 +81,18 @@ def start_game(color, max_depth, is_crazy=False, is_bot=False):
             else:
                 play_engine_move(board, ch.WHITE, max_depth)
 
-            cprint.cprint.ok('the engine is thinking...')
+            print('the engine is thinking...')
             play_engine_move(board, ch.BLACK, max_depth)
 
     save_board_state(board)
 
     outcome = board.outcome()
     if outcome.winner is None:
-        cprint.cprint.warn('GAME OVER')
+        print('GAME OVER')
     elif (outcome.winner == ch.WHITE and color in ['w', 'white']) or (outcome.winner == ch.BLACK and color in ['b', 'black']):
-        cprint.cprint.info('YOU WIN')
+        print('YOU WIN')
     else:
-        cprint.cprint.fatal('YOU LOSE')
+        print('YOU LOSE')
     board.reset()
 
     time.sleep(8)

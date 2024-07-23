@@ -23,10 +23,6 @@ Before using QueenGambit, make sure you have the following libraries installed:
   ```bash
   pip install python-chess
   ```
-- **cprint**: Used for colored console output during gameplay.
-  ```bash
-  pip install cprint
-  ```
 
 ## Features
 
