@@ -110,7 +110,7 @@ def get_user_input():
     is_bot = None
 
     colors = ['b', 'black', 'w', 'white']
-    levels = {'easy' : 3, 'medium' : 5, 'difficult' : 7, 'auto' : 5}
+    levels = {'easy' : 3, 'medium' : 5, 'hard' : 7, 'auto' : 5}
     boolean_values = {'y' : True, 'yes': True, 'n': False, 'no': False}
     
     while color not in colors:
@@ -118,7 +118,7 @@ def get_user_input():
     color = color.lower()
     
     while level not in levels.keys():
-        level = input('choose difficulty level (AUTO/EASY/MEDIUM/DIFFICULT): ').lower()
+        level = input('choose difficulty level (AUTO/EASY/MEDIUM/HARD): ').lower()
     max_depth = levels[level]
 
     while bot not in boolean_values.keys():
