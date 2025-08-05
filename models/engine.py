@@ -107,6 +107,8 @@ class Engine:
         if depth >= self.max_depth or len(list(self.board.legal_moves)) == 0:
             return self.evaluation_function()
         else:
+            play_move = None
+
             value = float('inf')
             moves = list(self.board.legal_moves)
 
@@ -119,12 +121,18 @@ class Engine:
                 if value > move_value:
                     value = move_value
 
+                    if depth == 0:
+                        play_move = move
+
                 # converge beta to left
                 beta = min(beta, value)
                 if alpha >= beta:
                     break
-
-            return value
+                
+            if depth == 0:
+                return play_move
+            else:
+                return value
         
     def get_best_move(self):
         # alpha - lower_limit
