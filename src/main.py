@@ -1,16 +1,18 @@
 import time
-import random
+import random as rd
 
 import chess as ch
-import engine as engine
+import chess.svg as ch_svg
+
+import engine
 
 def save_board_state(board, filename='chess_board.svg'):
     """Save the current state of the board to an SVG file."""
 
-    import chess.svg
-    time.sleep(2)
-    image = chess.svg.board(board)
-    with open(filename, 'wb') as f:
+    time.sleep(1)
+    image = ch_svg.board(board)
+
+    with open(filename, 'w') as f:
         f.write(image)
 
 def play_engine_move(board, color, max_depth):
@@ -36,7 +38,7 @@ def play_human_move(board, is_crazy=False):
             legal_moves_str = ' '.join(legal_moves)
             print('enter UNDO/END to interrupt the game...')
             print(f'legal moves: {legal_moves_str}')
-            move = input('enter your move: ') if not is_crazy else random.choice(legal_moves)
+            move = input('enter your move: ') if not is_crazy else rd.choice(legal_moves)
             if move.upper() == 'UNDO':
                 try:
                     board.pop()
@@ -98,7 +100,7 @@ def start_game(color, max_depth, is_crazy=False, is_bot=False):
     time.sleep(8)
     save_board_state(board)
 
-def get_user_input():
+def main():
     """Prompt the user to choose the color and difficulty level for the game."""
 
     color = None
@@ -132,9 +134,6 @@ def get_user_input():
 
 
     start_game(color, max_depth, is_crazy, is_bot)
-
-def main():
-    get_user_input()
 
 if __name__ == "__main__":
     main()

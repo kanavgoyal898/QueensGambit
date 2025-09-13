@@ -62,10 +62,6 @@ The implementation is structured into several key components:
 - `start_game()`: Alternates moves between the human player and the AI until the game is over.
 - `get_user_input()`: Collects user preferences for color, difficulty level, and bot/crazy mode.
 
-### Main Execution
-- **Main Function (`main()`):**
-  - Entry point of the program, which initializes the game by calling `get_user_input()`.
-
 ## Usage
 
 1. **Clone the repository**:
@@ -78,7 +74,7 @@ cd QueensGambit/
 2. **Run the main script**:
 
 ```bash
-cd models
+cd src/
 python main.py
 ```
 
