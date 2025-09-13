@@ -4,13 +4,13 @@ import random
 import chess as ch
 import engine as engine
 
-import chess.svg
 def save_board_state(board, filename='chess_board.svg'):
     """Save the current state of the board to an SVG file."""
 
+    import chess.svg
     time.sleep(2)
     image = chess.svg.board(board)
-    with open(filename, 'w') as f:
+    with open(filename, 'wb') as f:
         f.write(image)
 
 def play_engine_move(board, color, max_depth):
